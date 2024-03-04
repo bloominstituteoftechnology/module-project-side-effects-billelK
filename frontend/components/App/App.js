@@ -18,7 +18,15 @@ const App = () => {
   const [posts, setPosts] = useState(dummyData)
 
   // To make the search bar work (which is stretch) we'd need another state to hold the search term.
-  // const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("")
+
+  const getFilteredPosts = () => {
+    const trimedLowercaseSearchTerm = search.trim().toLocaleLowerCase()
+    if (!trimedLowercaseSearchTerm) return posts
+    return posts.filter(pst => {
+      return pst.username.includes(trimedLowercaseSearchTerm)
+    })
+  }
 
   const likePost = postId => {
     /*
@@ -46,8 +54,8 @@ const App = () => {
   return (
     <div className='App'>
       {/* Add SearchBar and Posts here to render them */}
-      <SearchBar />
-      <Posts posts={posts} likePost={likePost} />
+      <SearchBar setSearch={setSearch}/>
+      <Posts posts={getFilteredPosts()} likePost={likePost} />
       {/* Check the implementation of each component, to see what props they require, if any! */}
     </div>
   );
